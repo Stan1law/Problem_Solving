@@ -23,11 +23,18 @@ public class problem1 {
         String InputWord = scanner.next();
         int count = 0;
 
-        for (int i = 0; i < InputWord.length(); i++) {
-            if (InputWord.charAt(i) == 'a' || InputWord.charAt(i) == 'e' || InputWord.charAt(i) == 'i'
-                    || InputWord.charAt(i) == 'o' || InputWord.charAt(i) == 'U' || InputWord.charAt(i) == 'A'
-                    || InputWord.charAt(i) == 'E' || InputWord.charAt(i) == 'I' || InputWord.charAt(i) == 'O'
-                    || InputWord.charAt(i) == 'U') {
+        // for (int i = 0; i < InputWord.length(); i++) {
+        //     if (InputWord.charAt(i) == 'a' || InputWord.charAt(i) == 'e' || InputWord.charAt(i) == 'i'
+        //             || InputWord.charAt(i) == 'o' || InputWord.charAt(i) == 'u' || InputWord.charAt(i) == 'A'
+        //             || InputWord.charAt(i) == 'E' || InputWord.charAt(i) == 'I' || InputWord.charAt(i) == 'O'
+        //             || InputWord.charAt(i) == 'U') {
+        //         count++;
+        //     }
+        // }
+        //Better way to do it
+        for (int i = 0; i < inputWord.length(); i++) {
+            char ch = Character.toLowerCase(inputWord.charAt(i)); // Convert to lowercase for easier checking
+            if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u') {
                 count++;
             }
         }
