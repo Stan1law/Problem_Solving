@@ -84,3 +84,47 @@ When the user chooses to add a task, we use the Arrays.copyOf method to create a
 Adding an Element to the Array
 tasks[tasks.length - 1] = scanner.nextLine();
 After expanding the array, we add the new task to the last index of the array using the tasks.length - 1 syntax. This is because arrays in Java are 0-indexed, meaning that the first element is at index 0, and the last element is at index length - 1.  
+
+Loop Example
+for (int i = 0; i <= inputString.length() - substring.length(); i++) {
+    if (inputString.substring(i, i + substring.length()).equals(substring)) {
+        found = true;
+        break;
+    }
+}
+Loop Initialization
+int i = 0;
+This line initializes the loop counter i to 0. The loop will start by checking the first character in the input string.
+Loop Condition
+This line specifies the condition for the loop to continue. The loop will continue as long as the current index i is less than or equal to the length of the input string minus the length of the substring. This ensures that we don't go out of bounds when checking for the substring.
+Loop Increment
+i++;
+This line increments the loop counter i by 1 after each iteration of the loop. This moves the loop to the next character in the input string.
+Checking for the Substring
+if (inputString.substring(i, i + substring.length()).equals(substring)) {
+    found = true;
+    break;
+}
+This line checks if the substring starting at index i and ending at i + substring.length() is equal to the target substring. If it is, we set the found variable to true and break out of the loop.
+
+Example Walkthrough
+
+Let's say the input string is "I love programming in Java" and the target substring is "java". Here's how the loop would iterate through the characters:
+
+i = 0, inputString.substring(0, 4) = "I lo" (not equal to "java"), found = false
+i = 1, inputString.substring(1, 5) = "love" (not equal to "java"), found = false
+i = 2, inputString.substring(2, 6) = "ove p" (not equal to "java"), found = false
+i = 3, inputString.substring(3, 7) = "ve pr" (not equal to "java"), found = false
+i = 4, inputString.substring(4, 8) = "e pro" (not equal to "java"), found = false
+i = 5, inputString.substring(5, 9) = "progr" (not equal to "java"), found = false
+i = 6, inputString.substring(6, 10) = "ogram" (not equal to "java"), found = false
+i = 7, inputString.substring(7, 11) = "gramm" (not equal to "java"), found = false
+i = 8, inputString.substring(8, 12) = "rammi" (not equal to "java"), found = false
+i = 9, inputString.substring(9, 13) = "ammin" (not equal to "java"), found = false
+i = 10, inputString.substring(10, 14) = "mmin g" (not equal to "java"), found = false
+i = 11, inputString.substring(11, 15) = "ming J" (not equal to "java"), found = false
+i = 12, inputString.substring(12, 16) = "ing Ja" (not equal to "java"), found = false
+i = 13, inputString.substring(13, 17) = "ng Jav" (not equal to "java"), found = false
+i = 14, inputString.substring(14, 18) = "g Java" (equal to "java"), found = true
+After the loop finishes, the found variable is set to true, indicating that the target substring was found in
+
