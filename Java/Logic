@@ -128,3 +128,89 @@ i = 13, inputString.substring(13, 17) = "ng Jav" (not equal to "java"), found = 
 i = 14, inputString.substring(14, 18) = "g Java" (equal to "java"), found = true
 After the loop finishes, the found variable is set to true, indicating that the target substring was found in
 
+Shapes
+Triagle
+int rows = 5; 
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j <= i; j++) {
+                System.out.print("* ");
+            }
+            System.out.println();
+        }
+    }
+Inverted Triagle
+ int rows = 5; // number of rows in the triangle
+        for (int i = rows; i > 0; i--) {
+            for (int j = 0; j < i; j++) {
+                System.out.print("* ");
+            }
+            System.out.println();
+        }
+    }
+Square
+int size = 5; // size of the square
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                System.out.print("* ");
+            }
+            System.out.println();
+        }
+    }
+Rectangle
+int width = 5; // width of the rectangle
+        int height = 3; // height of the rectangle
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                System.out.print("* ");
+            }
+            System.out.println();
+        }
+    }
+Diamond
+int size = 5; // size of the diamond
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                System.out.print("  ");
+            }
+            for (int j = 0; j <= i; j++) {
+                System.out.print("* ");
+            }
+            System.out.println();
+        }
+        for (int i = size - 2; i >= 0; i--) {
+            for (int j = 0; j < size - i - 1; j++) {
+                System.out.print("  ");
+            }
+            for (int j = 0; j <= i; j++) {
+                System.out.print("* ");
+            }
+            System.out.println();
+        }
+    }
+Hollow Square
+int size = 5; // size of the square
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (i == 0 || i == size - 1 || j == 0 || j == size - 1) {
+                    System.out.print("* ");
+                } else {
+                    System.out.print("  ");
+                }
+            }
+            System.out.println();
+        }
+    }
+Hollow Rectangle
+int width = 5; // width of the rectangle
+        int height = 3; // height of the rectangle
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
+                    System.out.print("* ");
+                } else {
+                    System.out.print("  ");
+                }
+            }
+            System.out.println();
+        }
+    }
