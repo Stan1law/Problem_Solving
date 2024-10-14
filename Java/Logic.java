@@ -214,3 +214,54 @@ int width = 5; // width of the rectangle
             System.out.println();
         }
     }
+
+for display box room
+private void displayAllBookings() {
+    int boxWidth = 12; // width of each room box
+
+    for (Floor floor : floors) {
+        System.out.println("Floor " + floor.floorNumber); // Print the floor number
+
+        // First line: Top border for each room
+        for (Room room : floor.rooms) {
+            for (int i = 0; i < boxWidth; i++) {
+                System.out.print("*");
+            }
+            System.out.print("  "); // Space between rooms
+        }
+        System.out.println();
+
+        // Second line: Room number inside the box
+        for (Room room : floor.rooms) {
+            String roomInfo = "* Room " + room.roomNumber;
+            System.out.print(roomInfo);
+            for (int i = roomInfo.length(); i < boxWidth; i++) {
+                System.out.print(" ");
+            }
+            System.out.print("  "); // Space between rooms
+        }
+        System.out.println();
+
+        // Third line: Customer Name inside the box
+        for (Room room : floor.rooms) {
+            String customerInfo = "* " + (room.customerName != null ? room.customerName : "Empty");
+            System.out.print(customerInfo);
+            for (int i = customerInfo.length(); i < boxWidth; i++) {
+                System.out.print(" ");
+            }
+            System.out.print("  "); // Space between rooms
+        }
+        System.out.println();
+
+        // Fourth line: Bottom border for each room
+        for (Room room : floor.rooms) {
+            for (int i = 0; i < boxWidth; i++) {
+                System.out.print("*");
+            }
+            System.out.print("  "); // Space between rooms
+        }
+        System.out.println();
+        System.out.println(); // Extra line to separate floors
+    }
+}
+
