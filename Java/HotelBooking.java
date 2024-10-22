@@ -6,6 +6,27 @@ import java.util.Date;
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
 
+class Booking {
+    int roomNumber;
+    String customerName;
+    Date startTime;
+    Date endTime;
+
+    public Booking(int roomNumber, String customerName, Date startTime, Date endTime) {
+        this.roomNumber = roomNumber;
+        this.customerName = customerName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    public void displayBooking() {
+        System.out.println("Room Number: " + roomNumber);
+        System.out.println("Customer Name: " + customerName);
+        System.out.println("Start Time: " + startTime);
+        System.out.println("End Time: " + endTime);
+    }
+}
+
 class Room {
     int roomNumber;
     String customerName;
@@ -57,11 +78,13 @@ class Floor {
 
 public class HotelBooking_Project {
     private ArrayList<Floor> floors;
+    private ArrayList<Booking> bookingHistory;
     private Scanner scanner;
     private Timer timer; // Timer for periodic checks
 
     public HotelBooking_Project() {
         this.floors = new ArrayList<>();
+        this.bookingHistory = new ArrayList<>(); // Initialize the booking history
         this.scanner = new Scanner(System.in);
         this.timer = new Timer(); // Initialize the timer
 
@@ -84,7 +107,8 @@ public class HotelBooking_Project {
             System.out.println("1. Book Room");
             System.out.println("2. Display Booking");
             System.out.println("3. Display All Bookings");
-            System.out.println("4. Exit");
+            System.out.println("4. Display Booking History");
+            System.out.println("5. Exit");
             System.out.print("Choose an option: ");
             int option = scanner.nextInt();
             scanner.nextLine(); // Consume newline left-over
@@ -100,6 +124,9 @@ public class HotelBooking_Project {
                     displayAllBookings();
                     break;
                 case 4:
+                    displayBookingHistory();
+                    break;
+                case 5:
                     System.out.println("Exiting the system...");
                     timer.cancel(); // Stop the timer when exiting
                     System.exit(0);
@@ -117,7 +144,7 @@ public class HotelBooking_Project {
             for (Room room : floor.rooms) {
                 if (room.endTime != null && currentTime.after(room.endTime)) {
                     // If current time is past the end time, mark room as empty
-                    room.customerName = null;
+                    room.customerName = "empty";
                     room.startTime = null;
                     room.endTime = null;
                 }
@@ -156,6 +183,9 @@ public class HotelBooking_Project {
 
             room.bookRoom(customerName, startTime, endTime);
             System.out.println("Room booked successfully!");
+             // Store the booking in bookingHistory
+        Booking newBooking = new Booking(roomNumber, customerName, startTime, endTime);
+        bookingHistory.add(newBooking);  // Save the booking in history
         } else {
             System.out.println("Room not found.");
         }
@@ -256,6 +286,14 @@ public class HotelBooking_Project {
         System.out.println(); // Extra line to separate floors
     }
 }
+    
+    private void displayBookingHistory() {
+        System.out.println("Booking History:");
+        for (Booking booking : bookingHistory) {
+            booking.displayBooking();
+            System.out.println("--------------");
+        }
+    }
     
     private Floor getFloor(int floorNumber) {
         for (Floor floor : floors) {
