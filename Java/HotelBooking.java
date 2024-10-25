@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
+import java.util.InputMismatchException;
 
 class Booking {
     int roomNumber;
@@ -153,9 +154,18 @@ public class HotelBooking_Project {
     }
 
     private void bookRoom() {
-    System.out.print("Enter room number: ");
-    int roomNumber = scanner.nextInt();
-    scanner.nextLine(); // Consume newline left-over
+    int roomNumber;
+    while (true) {
+        try {
+            System.out.print("Enter room number: ");
+            roomNumber = scanner.nextInt();
+            scanner.nextLine(); // Consume newline left-over
+            break;
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a valid room number.");
+            scanner.nextLine(); // Clear invalid input
+        }
+    }
 
     // Get the floor number from the room number
     int floorNumber = roomNumber / 100;
