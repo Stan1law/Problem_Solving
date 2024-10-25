@@ -60,7 +60,7 @@ class Floor {
         this.rooms = new ArrayList<>();
 
         // Initialize rooms for this floor
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 10; i++) {
             int roomNumber = floorNumber * 100 + i;
             rooms.add(new Room(roomNumber));
         }
