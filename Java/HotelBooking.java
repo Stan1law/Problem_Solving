@@ -28,6 +28,7 @@ class Booking {
     }
 }
 
+
 class Room {
     int roomNumber;
     String customerName;
@@ -50,6 +51,12 @@ class Room {
         System.out.println("Start Time: " + startTime);
         System.out.println("End Time: " + endTime);
     }
+    
+    public void cancelBooking() {
+    customerName = null;
+    startTime = null;
+    endTime = null;
+}
 }
 
 class Floor {
@@ -109,7 +116,8 @@ public class HotelBooking_Project {
             System.out.println("2. Display Booking");
             System.out.println("3. Display All Bookings");
             System.out.println("4. Display Booking History");
-            System.out.println("5. Exit");
+            System.out.println("5. Edit Booking");
+            System.out.println("6. Exit");
             System.out.print("Choose an option: ");
             int option = scanner.nextInt();
             scanner.nextLine(); // Consume newline left-over
@@ -128,6 +136,9 @@ public class HotelBooking_Project {
                     displayBookingHistory();
                     break;
                 case 5:
+                    editBooking();
+                    break;
+                case 6:
                     System.out.println("Exiting the system...");
                     timer.cancel(); // Stop the timer when exiting
                     System.exit(0);
@@ -160,47 +171,225 @@ public class HotelBooking_Project {
             System.out.print("Enter room number: ");
             roomNumber = scanner.nextInt();
             scanner.nextLine(); // Consume newline left-over
-            break;
+
+            // Validate room number range
+            if (roomNumber < 200 || roomNumber > 699) {
+                System.out.println("Invalid room number. Please enter a room number between 200 and 699.");
+                continue;
+            }
+
+            // Get the floor number from the room number
+            int floorNumber = roomNumber / 100;
+
+            Floor floor = getFloor(floorNumber);
+            if (floor != null) {
+                Room room = floor.getRoom(roomNumber);
+                if (room != null) {
+                    // Check if the room is available for booking
+                    if (room.customerName != null) {
+                        System.out.println("Room is already occupied. Please choose another room.");
+                        continue;
+                    }
+
+                    // Proceed with booking
+                    System.out.print("Enter customer name: ");
+                    String customerName = scanner.nextLine();
+
+                    System.out.print("Enter start time (yyyy-MM-dd h:mm a): ");
+                    Date startTime = getDateFromInput();
+
+                    Date endTime;
+                    while (true) {
+                        System.out.print("Enter end time (yyyy-MM-dd h:mm a): ");
+                        endTime = getDateFromInput();
+                        if (endTime.after(startTime)) {
+                            break;
+                        } else {
+                            System.out.println("End time cannot be before start time. Please enter a valid end time.");
+                        }
+                    }
+
+                    // Check for overlapping bookings
+                    if (hasOverlappingBooking(roomNumber, startTime, endTime)) {
+                        System.out.println("Booking overlaps with an existing booking. Please choose a different time slot.");
+                        continue;
+                    }
+
+                    room.bookRoom(customerName, startTime, endTime);
+                    System.out.println("Room booked successfully!");
+                    // Store the booking in bookingHistory
+                    Booking newBooking = new Booking(roomNumber, customerName, startTime, endTime);
+                    bookingHistory.add(newBooking);  // Save the booking in history
+                    break;
+                } else {
+                    System.out.println("Room not found.");
+                }
+            } else {
+                System.out.println("Floor not found.");
+            }
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Please enter a valid room number.");
             scanner.nextLine(); // Clear invalid input
         }
     }
+}
 
-    // Get the floor number from the room number
-    int floorNumber = roomNumber / 100;
+private boolean hasOverlappingBooking(int roomNumber, Date startTime, Date endTime) {
+    for (Booking booking : bookingHistory) {
+        if (booking.roomNumber == roomNumber) {
+            Date bookingStartTime = booking.startTime;
+            Date bookingEndTime = booking.endTime;
 
-    Floor floor = getFloor(floorNumber);
-    if (floor != null) {
-        Room room = floor.getRoom(roomNumber);
-        if (room != null) {
-            System.out.print("Enter customer name: ");
-            String customerName = scanner.nextLine();
+            if ((startTime.after(bookingStartTime) && startTime.before(bookingEndTime)) ||
+                    (endTime.after(bookingStartTime) && endTime.before(bookingEndTime)) ||
+                    (startTime.before(bookingStartTime) && endTime.after(bookingEndTime))) {
+                return true;
+            }
+        }
+    }
+    return false;
+} 
 
-            System.out.print("Enter start time (yyyy-MM-dd h:mm a): ");
-            Date startTime = getDateFromInput();
+private void cancelBooking() {
+    int roomNumber;
+    while (true) {
+        try {
+            System.out.print("Enter room number: ");
+            roomNumber = scanner.nextInt();
+            scanner.nextLine(); // Consume newline left-over
 
-            Date endTime;
-            while (true) {
-                System.out.print("Enter end time (yyyy-MM-dd h:mm a): ");
-                endTime = getDateFromInput();
-                if (endTime.after(startTime)) {
-                    break;
-                } else {
-                    System.out.println("End time cannot be before start time. Please enter a valid end time.");
-                }
+            // Validate room number range
+            if (roomNumber < 200 || roomNumber > 699) {
+                System.out.println("Invalid room number. Please enter a room number between 200 and 699.");
+                continue;
             }
 
-            room.bookRoom(customerName, startTime, endTime);
-            System.out.println("Room booked successfully!");
-             // Store the booking in bookingHistory
-        Booking newBooking = new Booking(roomNumber, customerName, startTime, endTime);
-        bookingHistory.add(newBooking);  // Save the booking in history
-        } else {
-            System.out.println("Room not found.");
+            // Get the floor number from the room number
+            int floorNumber = roomNumber / 100;
+
+            Floor floor = getFloor(floorNumber);
+            if (floor != null) {
+                Room room = floor.getRoom(roomNumber);
+                if (room != null) {
+                    // Check if the room has an existing booking
+                    if (room.customerName == null) {
+                        System.out.println("Room has no existing booking.");
+                        continue;
+                    }
+
+                    // Display existing booking details
+                    System.out.println("Existing Booking Details:");
+                    System.out.println("Customer Name: " + room.customerName);
+                    System.out.println("Start Time: " + room.startTime);
+                    System.out.println("End Time: " + room.endTime);
+
+                    // Confirm cancellation
+                    System.out.print("Are you sure you want to cancel this booking? (yes/no): ");
+                    String confirm = scanner.nextLine().trim().toLowerCase();
+                    if (confirm.equals("yes")) {
+                        // Cancel booking
+                        room.cancelBooking();
+                        System.out.println("Booking cancelled successfully!");
+
+                        // Update booking history
+                        for (Booking booking : bookingHistory) {
+                            if (booking.roomNumber == roomNumber) {
+                                bookingHistory.remove(booking);
+                                break;
+                            }
+                        }
+                    } else {
+                        System.out.println("Cancellation cancelled.");
+                    }
+                } else {
+                    System.out.println("Room not found.");
+                }
+            } else {
+                System.out.println("Floor not found.");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a valid room number.");
+            scanner.nextLine(); // Clear invalid input
         }
-    } else {
-        System.out.println("Floor not found.");
+    }
+}
+
+private void editBooking() {
+    int roomNumber;
+    while (true) {
+        try {
+            System.out.print("Enter room number: ");
+            roomNumber = scanner.nextInt();
+            scanner.nextLine(); // Consume newline left-over
+
+            // Validate room number range
+            if (roomNumber < 200 || roomNumber > 699) {
+                System.out.println("Invalid room number. Please enter a room number between 200 and 699.");
+                continue;
+            }
+
+            // Get the floor number from the room number
+            int floorNumber = roomNumber / 100;
+
+            Floor floor = getFloor(floorNumber);
+            if (floor != null) {
+                Room room = floor.getRoom(roomNumber);
+                if (room != null) {
+                    // Check if the room has an existing booking
+                    if (room.customerName == null) {
+                        System.out.println("Room has no existing booking.");
+                        continue;
+                    }
+
+                    // Display existing booking details
+                    System.out.println("Existing Booking Details:");
+                    System.out.println("Customer Name: " + room.customerName);
+                    System.out.println("Start Time: " + room.startTime);
+                    System.out.println("End Time: " + room.endTime);
+
+                    // Edit booking details
+                    System.out.print("Enter new start time (yyyy-MM-dd h:mm a): ");
+                    Date newStartTime = getDateFromInput();
+
+                    System.out.print("Enter new end time (yyyy-MM-dd h:mm a): ");
+                    Date newEndTime;
+                    while (true) {
+                        newEndTime = getDateFromInput();
+                        if (newEndTime.after(newStartTime)) {
+                            break;
+                        } else {
+                            System.out.println("End time cannot be before start time. Please enter a valid end time.");
+                        }
+                    }
+
+                    // Check for overlapping bookings
+                    if (hasOverlappingBooking(roomNumber, newStartTime, newEndTime)) {
+                        System.out.println("New booking time overlaps with an existing booking. Please choose a different time slot.");
+                        continue;
+                    }
+
+                    // Update booking details
+                    room.bookRoom(room.customerName, newStartTime, newEndTime);
+                    System.out.println("Booking updated successfully!");
+
+                    // Update booking history
+                    for (Booking booking : bookingHistory) {
+                        if (booking.roomNumber == roomNumber) {
+                            booking.startTime = newStartTime;
+                            booking.endTime = newEndTime;
+                            break;
+                        }
+                    }
+                } else {
+                    System.out.println("Room not found.");
+                }
+            } else {
+                System.out.println("Floor not found.");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a valid room number.");
+            scanner.nextLine(); // Clear invalid input
+        }
     }
 }
 
