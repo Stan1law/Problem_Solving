@@ -49,7 +49,7 @@ public class HotelBookingManager {
             System.out.println("1. Book a room");
             System.out.println("2. Display booking by room number");
             System.out.println("3. Display all bookings");
-            System.out.println("4. Delete a booking");
+            System.out.println("4. Cancel a booking");
             System.out.println("5. Exit");
             System.out.print("Select an option: ");
             int choice = scanner.nextInt();
