@@ -101,14 +101,26 @@ private static void deleteBooking(Scanner scanner) {
     // Method to book a room
     private static void bookRoom(Scanner scanner) {
         System.out.println("Enter the customer's name: ");
-        scanner.nextLine();  // Consume newline left-over
+        scanner.nextLine();  // Consume newline
         String customerName = scanner.nextLine();
-        displayAvailableRooms();
 
+        // Validate customer name
+        if (customerName.isEmpty() || !customerName.matches("[a-zA-Z ]+")) {
+            System.out.println("Invalid name! Please enter alphabetic characters only.");
+            return;
+        }
+
+        displayAvailableRooms();
         System.out.print("Enter the room number: ");
         String roomNumber = scanner.next();
 
-        // Check if the room is available by iterating through bookings
+        // Validate room number
+        if (!rooms.contains(roomNumber)) {
+            System.out.println("Invalid room number! Please enter a valid room number.");
+            return;
+        }
+
+        // Check if room is already booked
         for (Booking booking : bookings) {
             if (booking.roomNumber.equals(roomNumber)) {
                 System.out.println("Sorry, room " + roomNumber + " is already booked.");
@@ -119,13 +131,19 @@ private static void deleteBooking(Scanner scanner) {
         System.out.print("Enter how many hours the customer will stay: ");
         int hours = scanner.nextInt();
 
+        // Validate hours
+        if (hours < 1 || hours > 24) {
+            System.out.println("Invalid duration! Please enter a value between 1 and 24 hours.");
+            return;
+        }
+
         LocalDateTime startTime = LocalDateTime.now();
         Booking newBooking = new Booking(customerName, roomNumber, startTime, hours);
 
-        // Save the booking to the list
+        // Save booking
         bookings.add(newBooking);
         newBooking.displayBooking();
-    }
+}
 
     // Method to display a booking by room number
     private static void displayBookingByRoom(Scanner scanner) {
