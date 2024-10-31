@@ -19,12 +19,12 @@ class Booking {
 
     // Display booking information (start and end times)
     public void displayBooking() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        System.out.println("Customer: " + customerName);
-        System.out.println("Room: " + roomNumber);
-        System.out.println("Start Time: " + startTime.format(formatter));
-        System.out.println("End Time: " + endTime.format(formatter));
-    }
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
+    System.out.println("Customer: " + customerName);
+    System.out.println("Room: " + roomNumber);
+    System.out.println("Start Time: " + startTime.format(formatter));
+    System.out.println("End Time: " + endTime.format(formatter));
+}
 
     // Method to extend the end time of the booking
     public void extendBooking(int additionalHours) {
