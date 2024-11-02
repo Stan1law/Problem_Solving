@@ -1,3 +1,4 @@
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -77,27 +78,7 @@ public class HotelBookingManager {
         }
     }
     
-    // Method to cancel a booking
-private static void deleteBooking(Scanner scanner) {
-    System.out.print("Enter the room number to cancel the booking: ");
-    String roomNumber = scanner.next();
-
-    boolean found = false;
-    for (int i = 0; i < bookings.size(); i++) {
-        if (bookings.get(i).roomNumber.equals(roomNumber)) {
-            bookings.remove(i);
-            System.out.println("Booking for room " + roomNumber + " has been cancelled.");
-            found = true;
-            break;
-        }
-    }
-
-    if (!found) {
-        System.out.println("No booking found for room " + roomNumber);
-    }
-}
-
-
+    
     // Method to book a room
     private static void bookRoom(Scanner scanner) {
         System.out.println("Enter the customer's name: ");
@@ -144,6 +125,43 @@ private static void deleteBooking(Scanner scanner) {
         bookings.add(newBooking);
         newBooking.displayBooking();
 }
+    
+        // Display available rooms in a grid format
+    private static void displayAvailableRooms() {
+        System.out.println("Available Rooms:");
+        
+        // Display rooms in the required format
+        for (int i = 0; i < 10; i++) {
+            String room201 = rooms.get(i);  // Second floor
+            String room301 = rooms.get(i + 10);  // Third floor
+            String room401 = rooms.get(i + 20);  // Fourth floor
+            String room501 = rooms.get(i + 30);  // Fifth floor
+            
+            // Check availability for each room
+            boolean available201 = isRoomAvailable(room201);
+            boolean available301 = isRoomAvailable(room301);
+            boolean available401 = isRoomAvailable(room401);
+            boolean available501 = isRoomAvailable(room501);
+            
+            // Display rooms in one line with tabs for alignment
+            System.out.printf("%-12s %-12s %-12s %-12s\n",
+                available201 ? "Room " + room201 : "",
+                available301 ? "Room " + room301 : "",
+                available401 ? "Room " + room401 : "",
+                available501 ? "Room " + room501 : "");
+        }
+        System.out.println();  // New line at the end
+    }
+
+    // Check if a room is available
+    private static boolean isRoomAvailable(String room) {
+        for (Booking booking : bookings) {
+            if (booking.roomNumber.equals(room)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     // Method to display a booking by room number
     private static void displayBookingByRoom(Scanner scanner) {
@@ -191,42 +209,24 @@ private static void deleteBooking(Scanner scanner) {
         rooms.add(String.valueOf(i));  // Fifth floor rooms 501-510
     }
 }
-
     
-    // Display available rooms in a grid format
-private static void displayAvailableRooms() {
-        System.out.println("Available Rooms:");
-        
-        // Display rooms in the required format
-        for (int i = 0; i < 10; i++) {
-            String room201 = rooms.get(i);  // Second floor
-            String room301 = rooms.get(i + 10);  // Third floor
-            String room401 = rooms.get(i + 20);  // Fourth floor
-            String room501 = rooms.get(i + 30);  // Fifth floor
-            
-            // Check availability for each room
-            boolean available201 = isRoomAvailable(room201);
-            boolean available301 = isRoomAvailable(room301);
-            boolean available401 = isRoomAvailable(room401);
-            boolean available501 = isRoomAvailable(room501);
-            
-            // Display rooms in one line with tabs for alignment
-            System.out.printf("%-12s %-12s %-12s %-12s\n",
-                available201 ? "Room " + room201 : "",
-                available301 ? "Room " + room301 : "",
-                available401 ? "Room " + room401 : "",
-                available501 ? "Room " + room501 : "");
+    // Method to cancel a booking
+    private static void deleteBooking(Scanner scanner) {
+    System.out.print("Enter the room number to cancel the booking: ");
+    String roomNumber = scanner.next();
+
+    boolean found = false;
+    for (int i = 0; i < bookings.size(); i++) {
+        if (bookings.get(i).roomNumber.equals(roomNumber)) {
+            bookings.remove(i);
+            System.out.println("Booking for room " + roomNumber + " has been cancelled.");
+            found = true;
+            break;
         }
-        System.out.println();  // New line at the end
     }
 
-    // Check if a room is available
-    private static boolean isRoomAvailable(String room) {
-        for (Booking booking : bookings) {
-            if (booking.roomNumber.equals(room)) {
-                return false;
-            }
-        }
-        return true;
+    if (!found) {
+        System.out.println("No booking found for room " + roomNumber);
     }
+}
 }
